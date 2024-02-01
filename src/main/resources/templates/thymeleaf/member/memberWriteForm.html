@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <title>Member Registration Form</title>
+        <style>
+            form > label {
+                display : inline-block;
+                width: 200px;
+            }
+            form > input {
+                padding : 4px;
+                margin-bottom: 4px;
+            }
+        </style>
+    </head>
+    <body>
+        <!--<h1>Member <span th:text="${formTitle}">Registration</span> Form</h1>-->
+        <!--
+            th:if 조건문 설명:
+                1. 기본적으로 if 구문을 사용해서 조건을 비교해도 되고, unless 구문을 사용해도 가능.
+                2. 다소 직관적이지 못하고 헷갈릴 수 있음.(처음 사용자)
+                3. if 구문을 사용하는게 보다 직관적이고, unless 구문을 사용하면 다소 직관적이지 못하게 느낄수 있음.
+                4. th:unless 구문은 if문과 조건이 동일하지만 if조건이 아닌 다른 조건의 경우를 찾음.
+                5. ~하지 않는한, ~한 경우[때] 외에는
+        -->
+        <h1>Member 
+            <!-- 다중 if 구문 사용 -->
+            <!--
+            <span th:if="${formTitle} == 'Registration'" th:text="${formTitle}"></span>                
+            <span th:if="${formTitle} == 'Modification'" th:text="${formTitle}"></span>
+            -->
+            <span th:if="${formTitle} == 'Modification'" th:text="${formTitle}"></span>
+            <span th:unless="${formTitle} == 'Modification'" th:text="${formTitle}"></span>
+        Form </h1>
+        <!--<form action="#" th:action="@{/"member/memberWriteOk}" th:object="${memberDTO}" method="POST">  -->
+        <!-- 삼항 연산자 구문을 사용하여 "등록" 시와 "수정"시 액션 주소 다르게 처리-->
+        <form 
+            th:object="${memberDTO}"
+            th:action="${formTitle != 'Registration' ? '/member/memberUpdateOk' : '/member/memberWriteOk'}"
+            method="POST"
+            id="memberWriteForm">
+
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" th:field="*{name}">
+            <br>
+
+            <label for="id">ID</label>
+            <input type="text" id="id" name="id" th:field="*{id}">
+            <br>
+
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone" th:field="*{phone}">
+            <br>
+
+
+            <!-- input type="submit" value=" Submit "><input type="reset" value=" Reset "-->
+            <!--
+                설명 :
+                    form 태그안에 button 태그로 버튼을 만드는 경우와 바깥쪽에 만드는 경우 주의사항?
+                        1. 폼 태그 안쪽에 만드는 경우 .. type='submit' 지정만 해주면 됨.
+                        2. 폼 태그 바깥에 만드는 경우 . 폼 요소에 id 지정 후 버튼 태그에 해당 id를 명시해준다. 안해주면 클릭이 안 됨.
+            -->
+            <!--button type="submit">회원등록</button-->
+        </form>
+        <!-- 1번 방식 : 다중 if 구문 사용-->
+        <!--
+        <button type="submit" form="memberWriteForm" th:if="${formTitle} == 'Registration'">회원등록</button>
+        <button type="submit" form="memberWriteForm" th:if="${formTitle} == 'Modification'">회원수정</button>
+        <button type="submit" form="memberWriteForm" th:if="${formTitle} == 'Deletion'">회원삭제</button>
+        -->
+        <!-- 2번 방식 : if .. else 구문과 같은 효과는? if.. unless 구문 사용-->
+        <!-- 한가지 주의할 점은 if 조건과 unless 조건을 동일하게 명시해줘야 함-->
+        <!--
+        <button type="submit" form="memberWriteForm" th:if="${formTitle} == 'Registration'">등록</button>
+        <button type="submit" form="memberWriteForm" th:unless="${formTitle} == 'Registration'">수정</button>
+        -->
+        <!-- 3번 방식 : if .. else if  구문과 같은 효과는? switch 구문 사용 -->
+        <div th:switch="${formTitle}">
+            <button type="submit" form="memberWriteForm" th:case="Registration">회원등록</button>
+            <button type="submit" form="memberWriteForm" th:case="Modification">회원수정</button>
+            <button type="submit" form="memberWriteForm" th:case="Deletion">회원삭제</button>
+        </div>
+    </body>
+</html>
