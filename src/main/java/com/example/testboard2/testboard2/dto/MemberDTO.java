@@ -2,19 +2,17 @@ package com.example.testboard2.testboard2.dto;
 
 public class MemberDTO {
 
-    // idx
-    private Long idx;
-    
-    // name
-    private String name;
-    private String id;
-    private String phone;
-
+    @Override
+    public String toString() {
+        return "MemberDTO [num=" + num + ", name=" + name + ", id=" + id + ", phone=" + phone + "]";
+    }
     public MemberDTO() {
     }
-
-    public void setIdx(Long idx) {
-        this.idx = idx;
+    // name
+    private int num;
+    private String name;
+    public void setNum(int num) {
+        this.num = num;
     }
     public void setName(String name) {
         this.name = name;
@@ -25,27 +23,19 @@ public class MemberDTO {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    
-    public Long getIdx() {
-        return idx;
+    private String id;
+    public int getNum() {
+        return num;
     }
     public String getName() {
         return name;
     }
-    
     public String getId() {
         return id;
     }
     public String getPhone() {
         return phone;
     }
-
-    @Override
-    public String toString() {
-        return "MemberDTO [idx=" + idx + ", name=" + name + ", id=" + id + ", phone=" + phone + "]";
-    }
-
-    
+    private String phone;
 
 }
-

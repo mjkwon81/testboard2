@@ -9,5 +9,5 @@ public interface MemberService {
     
     public void insertMember( MemberDTO m1 );
     public MemberDTO getMemberOne( int num );
-    
+    public void updateMember( MemberDTO m1 );
 }

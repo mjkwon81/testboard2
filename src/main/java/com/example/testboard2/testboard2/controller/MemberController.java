@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.testboard2.testboard2.dto.MemberDTO;
 import com.example.testboard2.testboard2.service.MemberService;
-import com.example.testboard2.testboard2.service.MemberServiceImpl;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class MemberController {
@@ -59,7 +60,7 @@ public class MemberController {
                 model.addAttribute( "msg", "회원 정보가 없습니다. 메인 페이지로 이동합니다." );
                 model.addAttribute( "url", "/");
 
-                return "/member/errorMessage";  //errorMessage.html
+                return "/member/messageAlert";  //messageAlert.html
 
             }
 
@@ -68,6 +69,7 @@ public class MemberController {
             // Form 페이지로 m1 객체를 전달  --> 모델(model)
             model.addAttribute("memberDTO", m1);
             model.addAttribute("formTitle", "Modification");
+            model.addAttribute("num", num);
         }
         else{
 
@@ -87,15 +89,22 @@ public class MemberController {
      * 회원 등록 Ok
      */
     @PostMapping("/member/memberWriteOk")
-    public String registerMember(MemberDTO m1){
+    public String registerMember(
+            MemberDTO m1,
+            Model model){
         
         try{
-            //등록처리
+            //등록처
             System.out.println(m1.toString());
             memberService.insertMember( m1 );
 
+            model.addAttribute("msg", "회원등록이 처리되었습니다. 메인 페이지로 이동합니다.");
+            model.addAttribute("url", "/");
+
+            return "/member/messageAlert"; //messageAlert.html
         }catch( Exception e){
             //error
+    
         }
 
         return "redirect:/member/memberWriteForm";
@@ -104,5 +113,42 @@ public class MemberController {
          *  1. 별 차이는 없다.
          *  2. 다만, redirect 경우는 다시 한번 해당 url로 http 요청을 넣는 형태.
          */
+    }
+
+    /*
+     * 회원 수정 Ok
+     */
+    @PostMapping("/member/memberUpdateOk")
+    public String updateMember(
+        MemberDTO m1,
+        HttpServletRequest request,
+        Model model ){
+
+        // 넘어오는 num 값 받아서 정수형으로 형 변환 --> getParameter() 반환이 String이므로.
+        String num_ = request.getParameter( "num" );
+        int num = Integer.parseInt(num_);
+
+        System.out.println( num );
+
+        try{
+            //등록처리
+            System.out.println(m1.toString());
+            
+            memberService.updateMember( m1 );
+
+            //안내 메세지 및 url  정보를 전달 -> messageAlert.html
+            // 3번 방식  : 특정페이지로 데이터 값들을 (Model을 사용) 보내서 출력
+
+            model.addAttribute("msg", "회원 정보가 수정되었습니다. 확인 페이지로 이동합니다.");
+            model.addAttribute("url", "/member/memberWriteForm?num=" + num );
+
+            return "/member/messageAlert";  //messageAlert.html
+
+        }catch( Exception e){
+            //error
+        }
+
+        return "redirect:/member/memberWriteForm?num=" + num;
+        
     }
 }

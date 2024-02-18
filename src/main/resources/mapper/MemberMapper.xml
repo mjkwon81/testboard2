@@ -3,18 +3,33 @@
 
 <mapper namespace="com.example.testboard2.testboard2.mapper.MemberMapper">
     <insert id="insertMember" parameterType="MemberDTO">
-        <!--INSERT INTO member (name, id, phone) VALUES ('이순신', 'mr.soon', '010-1111-2222'); -->
-        INSERT INTO member (
-              name
-            , id
-            , phone
-        ) VALUES (
-              #{name}
-            , #{id}
-            , #{phone}
-        );
+         <![CDATA[
+            <!--INSERT INTO member (name, id, phone) VALUES ('이순신', 'mr.soon', '010-1111-2222'); -->
+            INSERT INTO member (
+                name
+                , id
+                , phone
+            ) VALUES (
+                #{name}
+                , #{id}
+                , #{phone}
+            );
+        ]]>
     </insert>
     <select id="selectMemberOne" parameterType="int" resultType="MemberDTO">
-        SELECT * FROM MEMBER WHERE NUM = #{num};
+        <![CDATA[
+            SELECT * FROM MEMBER WHERE NUM = #{num};
+        ]]>
     </select>
+    
+    <update id="updateMember" parameterType="MemberDTO">
+        <![CDATA[
+            UPDATE MEMBER 
+            SET
+                  NAME  = #{name}
+                , ID    = #{id}
+                , phone = #{phone}
+            WHERE NUM   = #{num};
+        ]]>
+    </update>
 </mapper>

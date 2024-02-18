@@ -9,4 +9,5 @@ public interface MemberMapper {
     
     public void insertMember(MemberDTO memberDTO);
     public MemberDTO selectMemberOne( int num);
+    public void updateMember(MemberDTO memberDTO);
 }
