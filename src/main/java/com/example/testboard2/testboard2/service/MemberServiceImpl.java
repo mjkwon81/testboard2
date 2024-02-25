@@ -1,5 +1,7 @@
 package com.example.testboard2.testboard2.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void insertMember(MemberDTO m1) {
 
-        System.out.println(this.);
+        System.out.println(getClass().getName());
         memberMapper.insertMember(m1);
     }
 
@@ -36,5 +38,15 @@ public class MemberServiceImpl implements MemberService {
         System.out.println("updateMember");
         memberMapper.updateMember(m1);
     }
+
+    /*
+     * Select Memeber All
+     */
+    @Override
+    public List<MemberDTO> getMemberList() {
+        // TODO Auto-generated method stub
+        return memberMapper.selectMemberAll();
+    }
+    
     
 }

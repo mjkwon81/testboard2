@@ -1,5 +1,7 @@
 package com.example.testboard2.testboard2.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +26,7 @@ public class MemberController {
     /*
      * 회원 등록 Form Page
      */
-    @GetMapping("/member/memberWriteForm")
+    @GetMapping("/member/memberWriteFormNew")
     public String memberWriteForm(
         @RequestParam( value="num", required=false) Integer num,
         Model model){
@@ -64,7 +66,7 @@ public class MemberController {
 
             }
 
-            System.out.println(m1.toString());
+            System.out.println("memberWriteFormNew : " + m1.toString());
 
             // Form 페이지로 m1 객체를 전달  --> 모델(model)
             model.addAttribute("memberDTO", m1);
@@ -82,7 +84,7 @@ public class MemberController {
             model.addAttribute("formTitle", "Registration");
         }
 
-        return "member/memberWriteForm";   //memberWriteForm.html
+        return "member/memberWriteFormNew";   //memberWriteFormNew.html
     }
 
     /*
@@ -107,7 +109,7 @@ public class MemberController {
     
         }
 
-        return "redirect:/member/memberWriteForm";
+        return "redirect:/member/memberWriteFormNew";
         /**
          * 그냥 리턴처리 하는 것과 redirect 리턴의 차이
          *  1. 별 차이는 없다.
@@ -128,11 +130,11 @@ public class MemberController {
         String num_ = request.getParameter( "num" );
         int num = Integer.parseInt(num_);
 
-        System.out.println( num );
+        System.out.println("memberUpdateOk : " + num );
 
         try{
             //등록처리
-            System.out.println(m1.toString());
+            System.out.println("memberUpdateOk : " + m1.toString());
             
             memberService.updateMember( m1 );
 
@@ -140,7 +142,7 @@ public class MemberController {
             // 3번 방식  : 특정페이지로 데이터 값들을 (Model을 사용) 보내서 출력
 
             model.addAttribute("msg", "회원 정보가 수정되었습니다. 확인 페이지로 이동합니다.");
-            model.addAttribute("url", "/member/memberWriteForm?num=" + num );
+            model.addAttribute("url", "/member/memberWriteFormNew?num=" + num );
 
             return "/member/messageAlert";  //messageAlert.html
 
@@ -148,7 +150,24 @@ public class MemberController {
             //error
         }
 
-        return "redirect:/member/memberWriteForm?num=" + num;
+        return "redirect:/member/memberWriteFormNew?num=" + num;
         
     }
+
+    /*
+     * 회원 리스트
+     */
+    @GetMapping("/member/memberList")
+    public String memberList(Model model) {
+
+        List<MemberDTO> memberList = memberService.getMemberList();
+
+        System.out.println(memberList.get(0).toString());
+
+
+        // 객체 리스트 전달 - 모델에 담아서 리스트 페이지로 전달
+        model.addAttribute("memberList", memberList);
+        return "/member/memberList";    
+    }
+    
 }
